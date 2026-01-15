@@ -6,7 +6,7 @@ export default defineConfig({
   // GitHub Pages 部署配置
   // 如果项目部署在子目录，需要设置 base，例如：base: '/piggy/'
   // 如果部署在根目录，使用 base: '/'
-  base: '/',
+  base: '/piggy.github.io/',
   build: {
     outDir: 'dist',
     // 确保构建输出包含正确的路径
