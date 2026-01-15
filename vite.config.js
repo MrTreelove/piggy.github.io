@@ -11,6 +11,16 @@ export default defineConfig({
     outDir: 'dist',
     // 确保构建输出包含正确的路径
     assetsDir: 'assets',
+    // 确保 index.html 被正确处理
+    rollupOptions: {
+      input: {
+        main: './index.html',
+      },
+    },
+  },
+  // 确保开发和生产环境路径一致
+  server: {
+    port: 5173,
   },
 })
 
