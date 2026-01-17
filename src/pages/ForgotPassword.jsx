@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { Mail, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
 import Card from '../components/Card'
 
 export default function ForgotPassword() {
+  const { forgotPassword } = useAuth()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -14,15 +16,18 @@ export default function ForgotPassword() {
     setError('')
     setLoading(true)
 
-    // 模拟发送重置密码邮件
-    setTimeout(() => {
-      if (email) {
+    try {
+      const result = await forgotPassword(email)
+      if (result.success) {
         setSuccess(true)
       } else {
-        setError('请输入邮箱地址')
+        setError(result.error || '发送重置链接失败，请检查邮箱地址')
       }
+    } catch (err) {
+      setError('发送重置链接失败，请稍后重试')
+    } finally {
       setLoading(false)
-    }, 1500)
+    }
   }
 
   return (

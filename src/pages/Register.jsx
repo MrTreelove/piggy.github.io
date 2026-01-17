@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react'
 import Card from '../components/Card'
+import { PASSWORD_REQUIREMENTS } from '../config/config'
 
 export default function Register() {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ export default function Register() {
 
   const checkPasswordStrength = (password) => {
     let strength = 0
-    if (password.length >= 8) strength++
+    if (password.length >= PASSWORD_REQUIREMENTS.MIN_LENGTH) strength++
     if (/[a-z]/.test(password)) strength++
     if (/[A-Z]/.test(password)) strength++
     if (/[0-9]/.test(password)) strength++
@@ -44,8 +45,18 @@ export default function Register() {
       return
     }
 
-    if (formData.password.length < 6) {
-      setError('密码长度至少为6位')
+    if (formData.password.length < PASSWORD_REQUIREMENTS.MIN_LENGTH) {
+      setError(`密码长度至少为${PASSWORD_REQUIREMENTS.MIN_LENGTH}位`)
+      return
+    }
+
+    if (!/[a-zA-Z]/.test(formData.password)) {
+      setError('密码必须包含至少一个字母')
+      return
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      setError('密码必须包含至少一个数字')
       return
     }
 
@@ -143,7 +154,7 @@ export default function Register() {
                   type="password"
                   value={formData.password}
                   onChange={handlePasswordChange}
-                  placeholder="至少6位字符"
+                  placeholder={`至少${PASSWORD_REQUIREMENTS.MIN_LENGTH}位，包含字母和数字`}
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
                   required
                 />

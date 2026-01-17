@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import AddTransaction from './pages/AddTransaction'
 import TransactionList from './pages/TransactionList'
@@ -14,7 +15,19 @@ import Budget from './pages/Budget'
 import Settings from './pages/Settings'
 
 function AppRoutes() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+
+  // 加载状态下显示加载中
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">加载中...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Routes>
@@ -30,6 +43,10 @@ function AppRoutes() {
       <Route 
         path="/forgot-password" 
         element={isAuthenticated ? <Navigate to="/" replace /> : <ForgotPassword />} 
+      />
+      <Route 
+        path="/reset-password" 
+        element={isAuthenticated ? <Navigate to="/" replace /> : <ResetPassword />} 
       />
 
       {/* 受保护的路由 */}

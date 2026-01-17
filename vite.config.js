@@ -21,6 +21,16 @@ export default defineConfig({
   // 确保开发和生产环境路径一致
   server: {
     port: 5173,
+    // 代理配置，解决跨域问题
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+        // 重写路径，将 /api 前缀保留
+        rewrite: (path) => path
+      }
+    }
   },
 })
 

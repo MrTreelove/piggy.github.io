@@ -8,7 +8,7 @@ export default function Login() {
   const navigate = useNavigate()
   const { login } = useAuth()
   const [formData, setFormData] = useState({
-    username: '',
+    usernameOrEmail: '',
     password: '',
     rememberMe: false,
   })
@@ -21,9 +21,10 @@ export default function Login() {
     setLoading(true)
 
     try {
-      const result = await login(formData.username, formData.password, formData.rememberMe)
+      const result = await login(formData.usernameOrEmail, formData.password, formData.rememberMe)
       if (result.success) {
-        navigate('/')
+        // 使用完整路径导航，确保在 HashRouter 中正确跳转
+        navigate('/piggy.github.io/#/')
       } else {
         setError(result.error || '登录失败，请检查用户名和密码')
       }
@@ -64,8 +65,8 @@ export default function Login() {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                 <input
                   type="text"
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  value={formData.usernameOrEmail}
+                  onChange={(e) => setFormData({ ...formData, usernameOrEmail: e.target.value })}
                   placeholder="请输入用户名或邮箱"
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
                   required
